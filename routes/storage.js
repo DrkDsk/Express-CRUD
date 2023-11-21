@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const uploadMiddleware = require('../utils/handleStorage')
-const { createItem } = require('../controllers/storage')
+const { createItem } = require('../controllers/storageController')
 
 router.post("/",uploadMiddleware.single('myFile'), createItem)
 
