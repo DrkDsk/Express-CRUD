@@ -1,4 +1,4 @@
-const { allTracks, getTrack, createTrack} = require('../repository/tracksRepository')
+const { allTracks, getTrack, createTrack } = require('../repository/tracksRepository')
 
 const getItems = async (req, res) => {
     const data = await allTracks()
