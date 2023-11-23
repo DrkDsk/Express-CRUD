@@ -1,7 +1,8 @@
 const { getStorages, getStorage, deleteStorage, createStorage,  } = require('../repository/storageRepository')
-const {PUBLIC_URL} = require('../config/vars')
+const {PUBLIC_URL, MEDIA_PATH} = require('../config/vars')
 const {handleHttpError} = require("../utils/handleError");
 const {matchedData} = require("express-validator");
+const {unlinkSync} = require("fs");
 
 const getItems = async (req, res) => {
     try {
@@ -9,7 +10,7 @@ const getItems = async (req, res) => {
 
         res.send({data})
     } catch (e) {
-        handleHttpError(res, "Ha ocurrido un error al obtener la lista de recursos")
+        return handleHttpError(res, "Ha ocurrido un error al obtener la lista de recursos")
     }
 }
 
@@ -20,7 +21,7 @@ const getItem = async (req, res) => {
 
         res.send({data})
     }catch (e) {
-        handleHttpError(res, "Ha ocurrido un error al obtener el recurso")
+        return handleHttpError(res, "Ha ocurrido un error al obtener el recurso")
     }
 }
 const createItem = async (req, res) => {
@@ -34,18 +35,30 @@ const createItem = async (req, res) => {
         const data = await createStorage(fileData)
         res.send({data})
     } catch (e) {
-        handleHttpError(res, 'Ha ocurrido un error al guardar el recurso')
+        return handleHttpError(res, 'Ha ocurrido un error al guardar el recurso')
     }
 }
 
 const deleteItem = async (req, res) => {
     try {
         const {id} = matchedData(req)
+        const data = await getStorage(id)
+
+        if (!data) {
+            return handleHttpError(res, `No se encuentra el storage con el id: ${id}`, 404)
+        }
+
+        const { filename } = data
+        const filePath = `${MEDIA_PATH}/${filename}`
+        try {
+            unlinkSync(filePath)
+        } catch (e) {}
+
         await deleteStorage(id)
 
         res.send({message: `recurso eliminado: ${id}`})
     } catch (e) {
-        handleHttpError(res, 'Ha ocurrido un error al momento de eliminar el item')
+        return handleHttpError(res, 'Ha ocurrido un error al momento de eliminar el item')
     }
 }
 

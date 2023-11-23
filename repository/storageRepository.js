@@ -13,7 +13,7 @@ const createStorage = (body) => {
 }
 
 const deleteStorage = (_id) => {
-    return storagesModel.delete({_id})
+    return storagesModel.findByIdAndDelete({_id})
 }
 
 module.exports = { getStorages, getStorage, createStorage, deleteStorage }
