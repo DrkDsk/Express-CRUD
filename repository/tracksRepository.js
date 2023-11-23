@@ -20,7 +20,7 @@ const updateTrack = (_id, data) => {
 }
 
 const deleteTrack = (_id) => {
-    return tracksModel.findByIdAndRemove(_id)
+    return tracksModel.delete({_id})
 }
 
 module.exports = { allTracks, createTrack, getTrack, updateTrack, deleteTrack}

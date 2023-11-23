@@ -16,7 +16,7 @@ const getItem = async (req, res) => {
         const {id} = matchedData(req)
         const item = await getTrack(id)
 
-        res.send(item)
+        res.send({data : item})
     } catch (e) {
         handleHttpError(res, 'Ha ocurrido un error al momento de obtener un item')
     }
