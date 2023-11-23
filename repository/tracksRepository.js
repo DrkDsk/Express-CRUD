@@ -12,4 +12,15 @@ const getTrack = (_id) => {
     return tracksModel.findById(_id)
 }
 
-module.exports = { allTracks, createTrack, getTrack }
+const updateTrack = (_id, data) => {
+    return tracksModel.findByIdAndUpdate(_id, data, {
+        new : true,
+        upsert: true
+    })
+}
+
+const deleteTrack = (_id) => {
+    return tracksModel.findByIdAndRemove(_id)
+}
+
+module.exports = { allTracks, createTrack, getTrack, updateTrack, deleteTrack}

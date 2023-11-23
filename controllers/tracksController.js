@@ -1,30 +1,58 @@
-const { allTracks, getTrack, createTrack } = require('../repository/tracksRepository')
-
+const { allTracks, getTrack, createTrack, updateTrack, deleteTrack } = require('../repository/tracksRepository')
+const {handleHttpError} = require('../utils/handleError')
+const {matchedData} = require("express-validator");
 const getItems = async (req, res) => {
-    const data = await allTracks()
+    try {
+        const data = await allTracks()
 
-    res.send({data})
+        res.send({data})
+    } catch (e) {
+        handleHttpError(res, 'Ha ocurrido un error al momento de obtener los items')
+    }
 }
 
 const getItem = async (req, res) => {
-    const item = await getTrack(req.id)
+    try {
+        const {id} = matchedData(req)
+        const item = await getTrack(id)
 
-    res.send(item)
+        res.send(item)
+    } catch (e) {
+        handleHttpError(res, 'Ha ocurrido un error al momento de obtener un item')
+    }
 }
 
 const createItem = async (req, res) => {
-    const {body} = req
-    const track = await createTrack(body)
+    try {
+        const body = matchedData(req)
+        const track = await createTrack(body)
 
-    res.send(track)
+        res.send({track})
+    } catch (e) {
+        handleHttpError(res, 'Ha ocurrido un error al momento de crear el track')
+    }
 }
 
-const updateItem = (req, res) => {
+const updateItem = async (req, res) => {
+    try {
+        const {id, ...body} = matchedData(req)
+        const track = await updateTrack(id, body)
 
+        res.send({track})
+    } catch (e) {
+        handleHttpError(res, 'Ha ocurrido un error al momento de actualizar el track')
+    }
 }
 
-const deleteItem = (req, res) => {
+const deleteItem = async (req, res) => {
+    try {
+        const {id} = matchedData(req)
+        await deleteTrack(id)
 
+        res.send({message: `track eliminado: ${id}`})
+    } catch (e) {
+        handleHttpError(res, 'Ha ocurrido un error al momento de eliminar el item')
+    }
 }
 
 
