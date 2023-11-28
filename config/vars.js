@@ -6,6 +6,7 @@ const STATIC_PATH = process.env.STATIC_PATH
 const PUBLIC_URL = process.env.PUBLIC_URL
 const MEDIA_PATH = `${__dirname}/../storage`
 const JWT_SECRET = process.env.JWT_SECRET
+const SLACK_WEBHOOK = process.env.SLACK_WEBHOOK
 
 module.exports = {
     port,
@@ -13,5 +14,6 @@ module.exports = {
     STATIC_PATH,
     PUBLIC_URL,
     MEDIA_PATH,
-    JWT_SECRET
+    JWT_SECRET,
+    SLACK_WEBHOOK
 }
