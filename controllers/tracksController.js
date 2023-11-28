@@ -1,17 +1,17 @@
-const { allTracks, getTrack, createTrack, updateTrack, deleteTrack } = require('../repository/tracksRepository')
+const { allTracks, getTrack, createTrack, updateTrack, deleteTrack } = require('../repository/trackRepository')
 const {handleHttpError} = require('../utils/handleError')
 const {matchedData} = require("express-validator");
-const getItems = async (req, res) => {
+const getItemsController = async (req, res) => {
     try {
         const data = await allTracks()
 
-        res.send({data})
+        return res.send({data})
     } catch (e) {
         handleHttpError(res, 'Ha ocurrido un error al momento de obtener los items')
     }
 }
 
-const getItem = async (req, res) => {
+const getItemController = async (req, res) => {
     try {
         const {id} = matchedData(req)
         const item = await getTrack(id)
@@ -22,7 +22,7 @@ const getItem = async (req, res) => {
     }
 }
 
-const createItem = async (req, res) => {
+const createItemController = async (req, res) => {
     try {
         const body = matchedData(req)
         const track = await createTrack(body)
@@ -33,7 +33,7 @@ const createItem = async (req, res) => {
     }
 }
 
-const updateItem = async (req, res) => {
+const updateItemController = async (req, res) => {
     try {
         const {id, ...body} = matchedData(req)
         const track = await updateTrack(id, body)
@@ -44,7 +44,7 @@ const updateItem = async (req, res) => {
     }
 }
 
-const deleteItem = async (req, res) => {
+const deleteItemController = async (req, res) => {
     try {
         const {id} = matchedData(req)
         await deleteTrack(id)
@@ -57,5 +57,5 @@ const deleteItem = async (req, res) => {
 
 
 module.exports = {
-    getItems, getItem, createItem, updateItem, deleteItem
+    getItemsController, getItemController, createItemController, updateItemController, deleteItemController
 }

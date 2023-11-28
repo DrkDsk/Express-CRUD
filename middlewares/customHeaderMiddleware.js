@@ -5,9 +5,9 @@ const customHeader = (req, res, next) => {
         if (apiKey === 'alfredo palacios') {
             return next()
         }
-        res.status(403).send({error: 'API KEY INCORRECTA'})
+        return res.status(403).send({error: 'API KEY INCORRECTA'})
     } catch (e) {
-        res.status(403).send({error: 'OCURRIÓ UN PROBLEMA EN EL CUSTOM HEADER'})
+        return res.status(403).send({error: 'OCURRIÓ UN PROBLEMA EN EL CUSTOM HEADER'})
     }
 }
 

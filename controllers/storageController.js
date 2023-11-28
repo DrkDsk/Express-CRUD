@@ -4,27 +4,27 @@ const {handleHttpError} = require("../utils/handleError");
 const {matchedData} = require("express-validator");
 const {unlinkSync} = require("fs");
 
-const getItems = async (req, res) => {
+const getItemsController = async (req, res) => {
     try {
         const data = await getStorages()
 
-        res.send({data})
+        return res.send({data})
     } catch (e) {
         return handleHttpError(res, "Ha ocurrido un error al obtener la lista de recursos")
     }
 }
 
-const getItem = async (req, res) => {
+const getItemController = async (req, res) => {
     try {
         const {id} = matchedData(req)
         const data = await getStorage(id)
 
-        res.send({data})
+        return res.send({data})
     }catch (e) {
         return handleHttpError(res, "Ha ocurrido un error al obtener el recurso")
     }
 }
-const createItem = async (req, res) => {
+const createItemController = async (req, res) => {
     try {
         const {file} = req
         const fileData = {
@@ -33,13 +33,13 @@ const createItem = async (req, res) => {
         }
 
         const data = await createStorage(fileData)
-        res.send({data})
+        return res.send({data})
     } catch (e) {
         return handleHttpError(res, 'Ha ocurrido un error al guardar el recurso')
     }
 }
 
-const deleteItem = async (req, res) => {
+const deleteItemController = async (req, res) => {
     try {
         const {id} = matchedData(req)
         const data = await getStorage(id)
@@ -56,10 +56,10 @@ const deleteItem = async (req, res) => {
 
         await deleteStorage(id)
 
-        res.send({message: `recurso eliminado: ${id}`})
+        return res.send({message: `recurso eliminado: ${id}`})
     } catch (e) {
         return handleHttpError(res, 'Ha ocurrido un error al momento de eliminar el item')
     }
 }
 
-module.exports = {getItems, getItem, createItem, deleteItem}
+module.exports = {getItemsController, getItemController, createItemController, deleteItemController}
