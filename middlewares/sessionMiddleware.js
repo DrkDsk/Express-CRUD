@@ -14,10 +14,10 @@ const authMiddleware = async (req, res, next) => {
         }
 
         const user = await findUser({['_id'] : dataToken._id})
+        req.user = user
 
         return !user ? handleHttpError(res, 'USER_NOT_EXISTS', 404) : next()
     } catch (e) {
-        console.log(e)
         return handleHttpError(res, "ERROR_AT_AUTH_MIDDLEWARE")
     }
 }

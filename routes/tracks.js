@@ -8,11 +8,12 @@ const {
 } = require("../controllers/tracksController");
 const {validatorCreateItem, validatorGetItem} = require('../validators/tracksValidator')
 const router = express.Router()
-const customHeaderMiddleware = require('../middlewares/customHeaderMiddleware')
+const authMiddleware = require('../middlewares/sessionMiddleware')
+const checkRoleMiddleware = require('../middlewares/roleMiddleware')
 
 router.get("/", getItemsController)
 router.get("/:id", validatorGetItem, getItemController)
-router.post('/', validatorCreateItem, createItemController)
+router.post('/', authMiddleware, checkRoleMiddleware(['admin']), validatorCreateItem, createItemController)
 router.put('/:id', validatorGetItem, validatorCreateItem, updateItemController)
 router.delete('/:id', validatorGetItem, deleteItemController)
 

@@ -32,7 +32,6 @@ const loginController = async (req, res) => {
 
         return res.send({data})
     } catch (e) {
-        console.log(e)
         return handleHttpError(res, 'ERROR_AT_LOGIN')
     }
 }
